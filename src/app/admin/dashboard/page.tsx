@@ -28,15 +28,12 @@ export default function AdminDashboard() {
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
-    const handleScroll = () => {
-      if (isMenuOpen) setIsMenuOpen(false);
-    };
-
     if (isMenuOpen) {
-      window.addEventListener('scroll', handleScroll);
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
     }
-    
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => { document.body.style.overflow = 'unset'; };
   }, [isMenuOpen]);
 
   useEffect(() => {
