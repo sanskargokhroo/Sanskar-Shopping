@@ -72,6 +72,22 @@ export default function DealDetails() {
     toast.success("Link copied to clipboard!");
   };
 
+  const handleShare = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: deal?.title,
+          text: `Check out this amazing deal: ${deal?.offerPercentage}% OFF!`,
+          url: window.location.href,
+        });
+      } catch (err) {
+        console.error("Share failed:", err);
+      }
+    } else {
+      copyLink();
+    }
+  };
+
   if (loading) return <div className="h-screen flex items-center justify-center">Loading amazing deal...</div>;
   if (!deal) return null;
 
@@ -102,16 +118,12 @@ export default function DealDetails() {
                 className="object-cover" 
                 priority
               />
-              <div className="absolute top-6 left-6 flex flex-col gap-3">
-                <div className="bg-orange-500 text-white px-6 py-2 rounded-2xl text-xl font-black shadow-xl">
-                  {deal.offerPercentage}% OFF
-                </div>
+                {/* Redundant discount badge removed from image */}
                 {deal.status === 'live' && (
                   <div className="bg-red-500 text-white px-4 py-1.5 rounded-full text-xs font-bold flex items-center gap-2 animate-live w-fit">
                     <span className="w-2 h-2 bg-white rounded-full"></span> LIVE DEAL
                   </div>
                 )}
-              </div>
             </motion.div>
           </div>
 
@@ -152,38 +164,59 @@ export default function DealDetails() {
                   <ShieldCheck size={20} /> Verified Deal • Handpicked for you
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
-                  <button 
-                    onClick={copyLink}
-                    className="flex items-center justify-center gap-2 py-4 rounded-2xl bg-muted border border-border hover:bg-muted/80 transition-colors font-bold text-sm"
-                  >
-                    <LinkIcon size={18} /> Copy Link
-                  </button>
-                  <button 
-                    className="flex items-center justify-center gap-2 py-4 rounded-2xl bg-muted border border-border hover:bg-muted/80 transition-colors font-bold text-sm"
-                  >
-                    <Share2 size={18} /> Share
-                  </button>
-                </div>
-
                 <button 
                   onClick={handleGrabDeal}
-                  className="w-full btn-primary py-3.5 text-lg flex items-center justify-center gap-3 group/btn"
+                  className="w-full btn-primary py-4 text-xl flex items-center justify-center gap-3 group/btn shadow-xl shadow-orange-500/20"
                 >
-                  Grab This Deal Now
+                  Buy Now
                   <ExternalLink className="group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
                 </button>
 
+                <div className="grid grid-cols-2 gap-4">
+                  <button 
+                    onClick={copyLink}
+                    className="flex items-center justify-center py-4 rounded-2xl bg-muted/50 border border-border hover:bg-orange-500/10 hover:text-orange-500 transition-all text-muted-foreground"
+                    title="Copy Link"
+                  >
+                    <LinkIcon size={24} />
+                  </button>
+                  <button 
+                    onClick={handleShare}
+                    className="flex items-center justify-center py-4 rounded-2xl bg-muted/50 border border-border hover:bg-blue-500/10 hover:text-blue-500 transition-all text-muted-foreground"
+                    title="Share Deal"
+                  >
+                    <Share2 size={24} />
+                  </button>
+                </div>
+
                 <div className="flex items-center justify-center gap-6 pt-4 border-t border-border">
                   <div className="flex flex-col items-center">
-                    <span className="text-xl font-black">{deal.clickCount || 0}</span>
-                    <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-tighter">Clicks</span>
+                    <span className="text-2xl font-black text-foreground">₹{deal.price}</span>
+                    <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-tighter">Deal Price</span>
                   </div>
                   <div className="w-px h-8 bg-border"></div>
                   <div className="flex flex-col items-center">
-                    <span className="text-xl font-black text-orange-500">{deal.offerPercentage}%</span>
-                    <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-tighter">Savings</span>
+                    {deal.originalPrice > 0 ? (
+                      <>
+                        <span className="text-xl font-black text-muted-foreground line-through decoration-red-500/50">₹{deal.originalPrice}</span>
+                        <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-tighter">M.R.P</span>
+                      </>
+                    ) : (
+                      <>
+                        <span className="text-xl font-black text-orange-500">{deal.offerPercentage}%</span>
+                        <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-tighter">Savings</span>
+                      </>
+                    )}
                   </div>
+                  {deal.originalPrice > 0 && (
+                    <>
+                      <div className="w-px h-8 bg-border"></div>
+                      <div className="flex flex-col items-center">
+                        <span className="text-xl font-black text-orange-500">{deal.offerPercentage}%</span>
+                        <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-tighter">OFF</span>
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
             </motion.div>

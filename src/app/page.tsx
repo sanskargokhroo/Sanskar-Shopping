@@ -22,7 +22,8 @@ export default function Home() {
   useEffect(() => {
     // Real-time listener for all live deals
     const q = query(
-      collection(db, "deals")
+      collection(db, "deals"),
+      orderBy("createdAt", "desc")
     );
 
     const unsubscribe = onSnapshot(q, (snapshot) => {

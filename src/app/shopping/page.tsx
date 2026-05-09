@@ -19,7 +19,8 @@ export default function ShoppingPage() {
 
   useEffect(() => {
     const q = query(
-      collection(db, "deals")
+      collection(db, "deals"),
+      orderBy("createdAt", "desc")
     );
 
     const unsubscribe = onSnapshot(q, (snapshot) => {

@@ -141,16 +141,16 @@ export default function DealCard({ deal }: DealCardProps) {
           </div>
         </div>
 
-        {/* Action Button */}
+        {/* Action Button - Direct Redirect */}
         <a
           href={deal.redirectUrl}
           target="_blank"
           rel="noopener noreferrer"
           onClick={handleRedirect}
-          className="mt-4 w-full btn-primary py-2.5 text-sm flex items-center justify-center gap-2 group/btn"
+          className="mt-4 w-full btn-primary py-2.5 text-xs font-bold flex items-center justify-center gap-2 group/btn"
         >
-          {deal.dealType === 'earn' || deal.category === 'Earn Money' ? 'Start Earning' : 'Grab Deal'}
-          <ExternalLink size={14} className="group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
+          Buy Now
+          <ExternalLink size={14} className="group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
         </a>
       </div>
     </motion.div>
