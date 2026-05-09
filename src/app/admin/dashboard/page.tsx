@@ -23,6 +23,7 @@ export default function AdminDashboard() {
   const router = useRouter();
   const [deals, setDeals] = useState<Deal[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
@@ -79,48 +80,82 @@ export default function AdminDashboard() {
     router.push("/admin/login");
   };
 
+  const SidebarContent = () => (
+    <div className="flex flex-col h-full">
+      <Link href="/" className="flex items-center gap-2 mb-10 group">
+        <div className="w-10 h-10 relative">
+          <Image src="/logo1.png" alt="Logo" fill className="object-contain" />
+        </div>
+        <span className="text-xl font-bold">Sanskar <span className="gradient-text">Admin</span></span>
+      </Link>
+
+      <nav className="flex-1 space-y-2">
+        <button className="w-full flex items-center gap-3 p-4 rounded-2xl bg-orange-500 text-white font-bold shadow-lg shadow-orange-500/20 text-left">
+          <BarChart3 size={20} /> Dashboard
+        </button>
+        <Link href="/admin/deals/new" className="w-full flex items-center gap-3 p-4 rounded-2xl hover:bg-orange-500/10 transition-colors font-medium">
+          <Plus size={20} /> Add New Deal
+        </Link>
+        <Link href="/admin/banners" className="w-full flex items-center gap-3 p-4 rounded-2xl hover:bg-orange-500/10 transition-colors font-medium">
+          <Star size={20} /> Manage Banners
+        </Link>
+        <button className="w-full flex items-center gap-3 p-4 rounded-2xl hover:bg-orange-500/10 transition-colors font-medium text-left">
+          <Settings size={20} /> Settings
+        </button>
+      </nav>
+
+      <button onClick={handleLogout} className="mt-auto flex items-center gap-3 p-4 rounded-2xl text-red-500 hover:bg-red-500/10 transition-colors font-bold text-left">
+        <LogOut size={20} /> Logout
+      </button>
+    </div>
+  );
+
   if (authLoading || !user) return <div className="h-screen flex items-center justify-center">Loading...</div>;
 
   return (
-    <div className="min-h-screen bg-background flex">
-      {/* Sidebar */}
-      <aside className="w-64 glass border-r border-border hidden lg:flex flex-col p-6 fixed h-full">
-        <Link href="/" className="flex items-center gap-2 mb-10 group">
-          <div className="w-10 h-10 relative">
-            <Image src="/logo1.png" alt="Logo" fill className="object-contain" />
-          </div>
-          <span className="text-xl font-bold">Sanskar <span className="gradient-text">Admin</span></span>
-        </Link>
-
-        <nav className="flex-1 space-y-2">
-          <button className="w-full flex items-center gap-3 p-4 rounded-2xl bg-orange-500 text-white font-bold shadow-lg shadow-orange-500/20">
-            <BarChart3 size={20} /> Dashboard
-          </button>
-          <Link href="/admin/deals/new" className="w-full flex items-center gap-3 p-4 rounded-2xl hover:bg-orange-500/10 transition-colors font-medium">
-            <Plus size={20} /> Add New Deal
-          </Link>
-          <Link href="/admin/banners" className="w-full flex items-center gap-3 p-4 rounded-2xl hover:bg-orange-500/10 transition-colors font-medium">
-            <Star size={20} /> Manage Banners
-          </Link>
-          <button className="w-full flex items-center gap-3 p-4 rounded-2xl hover:bg-orange-500/10 transition-colors font-medium">
-            <Settings size={20} /> Settings
-          </button>
-        </nav>
-
-        <button onClick={handleLogout} className="mt-auto flex items-center gap-3 p-4 rounded-2xl text-red-500 hover:bg-red-500/10 transition-colors font-bold">
-          <LogOut size={20} /> Logout
-        </button>
+    <div className="min-h-screen bg-background flex flex-col lg:flex-row">
+      {/* Desktop Sidebar */}
+      <aside className="w-64 glass border-r border-border hidden lg:flex flex-col p-6 fixed h-full z-30">
+        <SidebarContent />
       </aside>
+
+      {/* Mobile Sidebar (Drawer) */}
+      {isMenuOpen && (
+        <div className="fixed inset-0 z-50 lg:hidden">
+          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setIsMenuOpen(false)} />
+          <div className="absolute left-0 top-0 bottom-0 w-[280px] bg-background p-6 shadow-2xl animate-in slide-in-from-left duration-300">
+            <button onClick={() => setIsMenuOpen(false)} className="absolute right-4 top-4 p-2 rounded-xl bg-muted">
+              <MoreVertical size={20} className="rotate-90" />
+            </button>
+            <SidebarContent />
+          </div>
+        </div>
+      )}
 
       {/* Main Content */}
       <main className="flex-1 lg:ml-64 p-4 md:p-8">
-        <header className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
-          <div>
-            <h1 className="text-3xl font-black mb-1">Dashboard Overview</h1>
-            <p className="text-muted-foreground">Manage your shopping deals and track performance.</p>
+        <header className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
+          <div className="flex items-center justify-between w-full md:w-auto">
+            <div className="flex items-center gap-4">
+              <button 
+                onClick={() => setIsMenuOpen(true)}
+                className="lg:hidden p-3 rounded-2xl bg-orange-500/10 text-orange-500 hover:bg-orange-500/20 transition-all"
+              >
+                <MoreVertical size={24} className="rotate-90" />
+              </button>
+              <div>
+                <h1 className="text-2xl md:text-3xl font-black mb-1">Dashboard Overview</h1>
+                <p className="text-xs md:text-sm text-muted-foreground font-medium uppercase tracking-wider">Sanskar Shopping Admin</p>
+              </div>
+            </div>
+            
+            <Link href="/admin/deals/new" className="md:hidden p-3 rounded-2xl bg-orange-500 text-white shadow-lg shadow-orange-500/20">
+              <Plus size={24} />
+            </Link>
           </div>
-          <Link href="/admin/deals/new" className="btn-primary flex items-center justify-center gap-2">
-            <Plus size={20} /> New Deal
+
+          <Link href="/admin/deals/new" className="hidden md:flex btn-primary items-center justify-center gap-2 px-8">
+            <Plus size={20} /> Add New Deal
           </Link>
         </header>
 
