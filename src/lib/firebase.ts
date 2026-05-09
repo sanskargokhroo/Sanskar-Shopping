@@ -16,6 +16,8 @@ const firebaseConfig = {
   measurementId: "G-BHY7NDT7VV"
 };
 
+import { getMessaging, getToken, onMessage, isSupported as isMessagingSupported } from "firebase/messaging";
+
 // Initialize Firebase
 const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
 
@@ -25,7 +27,17 @@ const db = getFirestore(app);
 const storage = getStorage(app);
 const googleProvider = new GoogleAuthProvider();
 
-// Initialize Analytics conditionally (it only works in the browser)
+// Initialize Messaging conditionally
+let messaging: any;
+if (typeof window !== "undefined") {
+  isMessagingSupported().then((supported) => {
+    if (supported) {
+      messaging = getMessaging(app);
+    }
+  });
+}
+
+// Initialize Analytics conditionally
 let analytics;
 if (typeof window !== "undefined") {
   isSupported().then((supported) => {
@@ -35,4 +47,4 @@ if (typeof window !== "undefined") {
   });
 }
 
-export { app, auth, db, storage, analytics, googleProvider };
+export { app, auth, db, storage, analytics, googleProvider, messaging };
