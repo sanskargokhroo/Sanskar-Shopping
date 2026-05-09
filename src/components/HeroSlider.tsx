@@ -94,7 +94,7 @@ export default function HeroSlider() {
   const currentBanner = banners[currentIndex];
 
   return (
-    <section className="relative w-full h-[450px] md:h-[600px] mb-16 group">
+    <section className="relative w-full aspect-[21/9] md:h-[600px] mb-12 group">
       <AnimatePresence mode="wait">
         <motion.div
           key={currentBanner.id}
@@ -102,7 +102,7 @@ export default function HeroSlider() {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.5 }}
-          className="absolute inset-0 rounded-[2rem] md:rounded-[3rem] overflow-hidden bg-black"
+          className="absolute inset-0 rounded-2xl md:rounded-[3rem] overflow-hidden bg-black"
         >
           <Image 
             src={currentBanner.imageUrl} 
@@ -111,31 +111,31 @@ export default function HeroSlider() {
             className="object-cover"
             priority
           />
-          <div className="absolute inset-0 bg-black/40 bg-gradient-to-t from-black/90 via-black/20 to-transparent flex items-center justify-center text-center p-4 md:p-8">
+          <div className="absolute inset-0 bg-black/30 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-center justify-center text-center p-3 md:p-8">
             <div className="max-w-4xl w-full">
               <motion.h1 
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2, duration: 0.5 }}
-                className="text-3xl md:text-7xl font-black text-white mb-3 md:mb-6 leading-tight px-2"
+                transition={{ delay: 0.1 }}
+                className="text-base md:text-7xl font-black text-white mb-2 md:mb-6 leading-tight"
               >
                 {currentBanner.title}
               </motion.h1>
               <motion.p 
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3, duration: 0.5 }}
-                className="text-xs md:text-xl text-white/90 font-medium mb-6 md:mb-10 max-w-2xl mx-auto line-clamp-3 px-4"
+                transition={{ delay: 0.2 }}
+                className="hidden md:block text-xl text-white/90 font-medium mb-10 max-w-2xl mx-auto"
               >
                 {currentBanner.subtitle}
               </motion.p>
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4, duration: 0.5 }}
+                transition={{ delay: 0.3 }}
               >
-                <Link href={currentBanner.link} className="btn-primary bg-orange-500 text-white hover:bg-orange-600 px-6 md:px-8 py-2.5 md:py-3.5 text-sm md:text-lg rounded-xl md:rounded-2xl shadow-xl shadow-orange-500/30 inline-flex items-center gap-2">
-                  Learn More <ArrowRight size={18} />
+                <Link href={currentBanner.link} className="btn-primary bg-orange-500 text-white hover:bg-orange-600 px-4 md:px-8 py-1.5 md:py-3.5 text-[10px] md:text-lg rounded-lg md:rounded-2xl shadow-lg inline-flex items-center gap-1.5">
+                  View Deal <ArrowRight size={12} className="md:w-5 md:h-5" />
                 </Link>
               </motion.div>
             </div>

@@ -79,11 +79,6 @@ export default function DealCard({ deal }: DealCardProps) {
         
         {/* Badges */}
         <div className="absolute top-3 left-3 flex flex-col gap-2">
-          {deal.offerPercentage > 0 && !(deal.dealType === 'earn' || deal.category === 'Earn Money') && (
-            <div className="bg-orange-500 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg">
-              {deal.offerPercentage}% OFF
-            </div>
-          )}
           {deal.status === 'live' && (
             <div className="bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded-full flex items-center gap-1 animate-live">
               <span className="w-1.5 h-1.5 bg-white rounded-full"></span>
@@ -92,17 +87,6 @@ export default function DealCard({ deal }: DealCardProps) {
           )}
         </div>
 
-        {/* Category & Platform Tags */}
-        {!(deal.dealType === 'earn' || deal.category === 'Earn Money') && (
-          <div className="absolute bottom-3 left-3 flex gap-2">
-            <div className="glass px-3 py-1 rounded-full text-[10px] font-semibold text-foreground uppercase tracking-wider">
-              {deal.category}
-            </div>
-            <div className="bg-black/50 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-bold text-white uppercase tracking-wider">
-              {deal.platform}
-            </div>
-          </div>
-        )}
       </a>
 
       {/* Content */}
@@ -121,9 +105,14 @@ export default function DealCard({ deal }: DealCardProps) {
 
         {deal.price > 0 && !(deal.dealType === 'earn' || deal.category === 'Earn Money') && (
           <div className="mt-2 flex items-center gap-2">
-            <span className="text-lg font-black text-foreground">₹{deal.price}</span>
+            <span className="text-xl font-black text-foreground">₹{deal.price}</span>
             {deal.originalPrice > 0 && (
               <span className="text-xs text-muted-foreground line-through font-medium">₹{deal.originalPrice}</span>
+            )}
+            {deal.offerPercentage > 0 && (
+              <span className="ml-auto text-xs font-bold text-orange-500 bg-orange-500/10 px-2 py-1 rounded-lg">
+                {deal.offerPercentage}% OFF
+              </span>
             )}
           </div>
         )}
