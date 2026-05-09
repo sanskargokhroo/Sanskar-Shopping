@@ -28,12 +28,15 @@ export default function AdminDashboard() {
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
+    const handleScroll = () => {
+      if (isMenuOpen) setIsMenuOpen(false);
+    };
+
     if (isMenuOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
+      window.addEventListener('scroll', handleScroll);
     }
-    return () => { document.body.style.overflow = 'unset'; };
+    
+    return () => window.removeEventListener('scroll', handleScroll);
   }, [isMenuOpen]);
 
   useEffect(() => {
@@ -145,7 +148,7 @@ export default function AdminDashboard() {
               animate={{ x: 0 }}
               exit={{ x: "-100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="absolute left-0 top-0 bottom-0 w-[280px] bg-background p-6 shadow-2xl flex flex-col"
+              className="absolute left-0 top-0 bottom-0 w-[280px] bg-[#09090b] p-6 shadow-2xl flex flex-col border-r border-white/5"
             >
               <button onClick={() => setIsMenuOpen(false)} className="absolute right-4 top-4 p-2 rounded-xl bg-muted hover:bg-orange-500/10 transition-colors">
                 <X size={20} />
