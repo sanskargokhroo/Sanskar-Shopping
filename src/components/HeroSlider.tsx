@@ -94,7 +94,7 @@ export default function HeroSlider() {
   const currentBanner = banners[currentIndex];
 
   return (
-    <section className="relative w-full aspect-[16/9] md:h-[600px] mb-16 group">
+    <section className="relative w-full h-[450px] md:h-[600px] mb-16 group">
       <AnimatePresence mode="wait">
         <motion.div
           key={currentBanner.id}
@@ -108,16 +108,16 @@ export default function HeroSlider() {
             src={currentBanner.imageUrl} 
             alt={currentBanner.title} 
             fill 
-            className="object-contain md:object-cover"
+            className="object-cover"
             priority
           />
-          <div className="absolute inset-0 bg-black/40 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex items-center justify-center text-center p-8">
-            <div className="max-w-4xl">
+          <div className="absolute inset-0 bg-black/40 bg-gradient-to-t from-black/90 via-black/20 to-transparent flex items-center justify-center text-center p-4 md:p-8">
+            <div className="max-w-4xl w-full">
               <motion.h1 
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2, duration: 0.5 }}
-                className="text-3xl md:text-7xl font-black text-white mb-4 leading-tight"
+                className="text-3xl md:text-7xl font-black text-white mb-3 md:mb-6 leading-tight px-2"
               >
                 {currentBanner.title}
               </motion.h1>
@@ -125,7 +125,7 @@ export default function HeroSlider() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3, duration: 0.5 }}
-                className="text-sm md:text-xl text-white/90 font-medium mb-6 max-w-2xl mx-auto line-clamp-2"
+                className="text-xs md:text-xl text-white/90 font-medium mb-6 md:mb-10 max-w-2xl mx-auto line-clamp-3 px-4"
               >
                 {currentBanner.subtitle}
               </motion.p>
@@ -134,8 +134,8 @@ export default function HeroSlider() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4, duration: 0.5 }}
               >
-                <Link href={currentBanner.link} className="btn-primary bg-orange-500 text-white hover:bg-orange-600 px-6 md:px-8 py-2.5 md:py-3.5 text-base md:text-lg rounded-2xl shadow-xl shadow-orange-500/30 inline-flex items-center gap-2">
-                  Learn More <ArrowRight size={20} />
+                <Link href={currentBanner.link} className="btn-primary bg-orange-500 text-white hover:bg-orange-600 px-6 md:px-8 py-2.5 md:py-3.5 text-sm md:text-lg rounded-xl md:rounded-2xl shadow-xl shadow-orange-500/30 inline-flex items-center gap-2">
+                  Learn More <ArrowRight size={18} />
                 </Link>
               </motion.div>
             </div>
