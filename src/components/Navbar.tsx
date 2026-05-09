@@ -22,7 +22,6 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
-  const { theme, toggleTheme } = useTheme();
   const { user } = useAuth();
 
   useEffect(() => {
@@ -38,8 +37,8 @@ export default function Navbar() {
       <div className="container mx-auto px-4 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 group">
-          <div className="w-12 h-12 relative group-hover:scale-110 transition-transform">
-            <Image src="/logo.png" alt="Logo" fill className="object-contain" />
+          <div className="w-12 h-12 relative flex items-center justify-center group-hover:scale-110 transition-transform bg-transparent border-none shadow-none">
+            <Image src="/logo1.png" alt="Logo" fill className="object-contain" />
           </div>
           <span className="text-xl font-black tracking-tight gradient-text">
             Sanskar Shopping
@@ -61,14 +60,6 @@ export default function Navbar() {
 
         {/* Actions */}
         <div className="flex items-center gap-2">
-          <button
-            onClick={toggleTheme}
-            className="p-2 rounded-xl hover:bg-orange-500/10 transition-colors"
-            aria-label="Toggle theme"
-          >
-            {theme === "light" ? <Moon size={20} /> : <Sun size={20} />}
-          </button>
-
           {user ? (
             <Link href="/admin/dashboard" className="p-2 rounded-xl hover:bg-orange-500/10 transition-colors text-orange-500" title="Admin Dashboard">
               <LayoutDashboard size={20} />

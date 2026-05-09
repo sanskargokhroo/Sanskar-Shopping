@@ -15,9 +15,9 @@ export const metadata: Metadata = {
   title: "Sanskar Shopping | Premium Deals",
   description: "Discover the best shopping deals, handpicked for you. Modern, fast, and secure.",
   icons: {
-    icon: '/app-logo-v1.png',
-    shortcut: '/app-logo-v1.png',
-    apple: '/app-logo-v1.png',
+    icon: '/logo1.png',
+    shortcut: '/logo1.png',
+    apple: '/logo1.png',
   },
 };
 

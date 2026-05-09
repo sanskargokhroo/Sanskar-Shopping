@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { ShoppingBag, Globe, Send, Share2, Mail, MapPin, Phone, MessageCircle } from "lucide-react";
 
 export default function Footer() {
@@ -12,8 +13,8 @@ export default function Footer() {
           {/* Brand */}
           <div className="space-y-6">
             <Link href="/" className="flex items-center gap-2 group">
-              <div className="w-10 h-10 bg-gradient-to-tr from-orange-500 to-pink-600 rounded-xl flex items-center justify-center shadow-lg">
-                <ShoppingBag className="text-white w-6 h-6" />
+              <div className="w-10 h-10 relative">
+                <Image src="/logo1.png" alt="Logo" fill className="object-contain" />
               </div>
               <span className="text-xl font-bold tracking-tight">
                 Sanskar <span className="gradient-text">Shopping</span>

@@ -86,8 +86,8 @@ export default function AdminDashboard() {
       {/* Sidebar */}
       <aside className="w-64 glass border-r border-border hidden lg:flex flex-col p-6 fixed h-full">
         <Link href="/" className="flex items-center gap-2 mb-10 group">
-          <div className="w-10 h-10 bg-gradient-to-tr from-orange-500 to-pink-600 rounded-xl flex items-center justify-center shadow-lg">
-            <ShoppingBag className="text-white w-6 h-6" />
+          <div className="w-10 h-10 relative">
+            <Image src="/logo1.png" alt="Logo" fill className="object-contain" />
           </div>
           <span className="text-xl font-bold">Sanskar <span className="gradient-text">Admin</span></span>
         </Link>
@@ -153,7 +153,7 @@ export default function AdminDashboard() {
                 placeholder="Search deals..." 
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 pr-4 py-2 bg-muted rounded-xl border border-border focus:border-orange-500 outline-none w-64"
+                className="pl-10 pr-4 py-2 bg-white rounded-xl border border-border focus:border-orange-500 outline-none w-64"
               />
             </div>
           </div>
@@ -161,7 +161,7 @@ export default function AdminDashboard() {
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="bg-muted/50">
+                <tr className="bg-orange-500/5">
                   <th className="p-4 font-bold text-sm">Product</th>
                   <th className="p-4 font-bold text-sm">Category</th>
                   <th className="p-4 font-bold text-sm">Discount</th>
@@ -172,10 +172,10 @@ export default function AdminDashboard() {
               </thead>
               <tbody className="divide-y divide-border">
                 {deals.filter(d => d.title.toLowerCase().includes(searchTerm.toLowerCase())).map((deal) => (
-                  <tr key={deal.id} className="hover:bg-muted/30 transition-colors group">
+                  <tr key={deal.id} className="hover:bg-orange-500/5 transition-colors group">
                     <td className="p-4">
                       <div className="flex items-center gap-3">
-                        <div className="relative w-12 h-12 rounded-lg overflow-hidden flex-shrink-0 bg-muted">
+                        <div className="relative w-12 h-12 rounded-lg overflow-hidden flex-shrink-0 bg-white border border-border">
                           <Image src={deal.imageUrl} alt="" fill className="object-cover" />
                         </div>
                         <div>

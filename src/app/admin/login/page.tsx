@@ -41,7 +41,7 @@ export default function AdminLogin() {
         <div className="text-center mb-10">
           <Link href="/" className="inline-flex items-center gap-3 mb-8 group">
             <div className="w-14 h-14 relative group-hover:rotate-12 transition-transform">
-              <Image src="/logo.png" alt="Logo" fill className="object-contain" />
+              <Image src="/logo1.png" alt="Logo" fill className="object-contain" />
             </div>
             <span className="text-3xl font-black">Sanskar <span className="gradient-text">Admin</span></span>
           </Link>
