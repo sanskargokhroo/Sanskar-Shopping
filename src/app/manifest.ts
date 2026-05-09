@@ -3,7 +3,7 @@ import { MetadataRoute } from 'next'
 export default function manifest(): MetadataRoute.Manifest {
   return {
     name: 'Sanskar Shopping',
-    short_name: 'SanskarShopping',
+    short_name: 'Sanskar Shopping',
     description: 'Find the best premium deals online.',
     start_url: '/',
     display: 'standalone',

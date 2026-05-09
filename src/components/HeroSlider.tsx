@@ -94,7 +94,7 @@ export default function HeroSlider() {
   const currentBanner = banners[currentIndex];
 
   return (
-    <section className="relative w-full h-[450px] md:h-[600px] mb-16 group">
+    <section className="relative w-full h-[280px] md:h-[600px] mb-16 group">
       <AnimatePresence mode="wait">
         <motion.div
           key={currentBanner.id}
@@ -117,7 +117,7 @@ export default function HeroSlider() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2, duration: 0.5 }}
-                className="text-5xl md:text-7xl font-black text-white mb-6 leading-tight"
+                className="text-3xl md:text-7xl font-black text-white mb-4 leading-tight"
               >
                 {currentBanner.title}
               </motion.h1>
@@ -125,7 +125,7 @@ export default function HeroSlider() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3, duration: 0.5 }}
-                className="text-lg md:text-xl text-white/90 font-medium mb-10 max-w-2xl mx-auto"
+                className="text-sm md:text-xl text-white/90 font-medium mb-6 max-w-2xl mx-auto line-clamp-2"
               >
                 {currentBanner.subtitle}
               </motion.p>
@@ -134,7 +134,7 @@ export default function HeroSlider() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4, duration: 0.5 }}
               >
-                <Link href={currentBanner.link} className="btn-primary bg-orange-500 text-white hover:bg-orange-600 px-8 py-3.5 text-lg rounded-2xl shadow-xl shadow-orange-500/30 inline-flex items-center gap-2">
+                <Link href={currentBanner.link} className="btn-primary bg-orange-500 text-white hover:bg-orange-600 px-6 md:px-8 py-2.5 md:py-3.5 text-base md:text-lg rounded-2xl shadow-xl shadow-orange-500/30 inline-flex items-center gap-2">
                   Learn More <ArrowRight size={20} />
                 </Link>
               </motion.div>
