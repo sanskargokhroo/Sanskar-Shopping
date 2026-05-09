@@ -10,8 +10,9 @@ import {
   Plus, Search, Edit2, Trash2, ExternalLink, 
   TrendingUp, CheckCircle2, Clock, XCircle, 
   BarChart3, Settings, LogOut, ShoppingBag, 
-  Star, StarOff, MoreVertical
+  Star, StarOff, Menu, X
 } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import toast from "react-hot-toast";
 import Image from "next/image";
 import Link from "next/link";
@@ -120,17 +121,31 @@ export default function AdminDashboard() {
       </aside>
 
       {/* Mobile Sidebar (Drawer) */}
-      {isMenuOpen && (
-        <div className="fixed inset-0 z-50 lg:hidden">
-          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setIsMenuOpen(false)} />
-          <div className="absolute left-0 top-0 bottom-0 w-[280px] bg-background p-6 shadow-2xl animate-in slide-in-from-left duration-300">
-            <button onClick={() => setIsMenuOpen(false)} className="absolute right-4 top-4 p-2 rounded-xl bg-muted">
-              <MoreVertical size={20} className="rotate-90" />
-            </button>
-            <SidebarContent />
+      <AnimatePresence>
+        {isMenuOpen && (
+          <div className="fixed inset-0 z-50 lg:hidden">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 bg-black/60 backdrop-blur-sm" 
+              onClick={() => setIsMenuOpen(false)} 
+            />
+            <motion.div 
+              initial={{ x: "-100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "-100%" }}
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              className="absolute left-0 top-0 bottom-0 w-[280px] bg-background p-6 shadow-2xl flex flex-col"
+            >
+              <button onClick={() => setIsMenuOpen(false)} className="absolute right-4 top-4 p-2 rounded-xl bg-muted hover:bg-orange-500/10 transition-colors">
+                <X size={20} />
+              </button>
+              <SidebarContent />
+            </motion.div>
           </div>
-        </div>
-      )}
+        )}
+      </AnimatePresence>
 
       {/* Main Content */}
       <main className="flex-1 lg:ml-64 p-4 md:p-8">
@@ -141,7 +156,7 @@ export default function AdminDashboard() {
                 onClick={() => setIsMenuOpen(true)}
                 className="lg:hidden p-3 rounded-2xl bg-orange-500/10 text-orange-500 hover:bg-orange-500/20 transition-all"
               >
-                <MoreVertical size={24} className="rotate-90" />
+                <Menu size={24} />
               </button>
               <div>
                 <h1 className="text-2xl md:text-3xl font-black mb-1">Dashboard Overview</h1>
