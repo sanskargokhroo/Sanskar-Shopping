@@ -1,0 +1,174 @@
+"use client";
+
+import React from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import { Share2, Link as LinkIcon, ExternalLink, Clock } from "lucide-react";
+import { Deal } from "@/types";
+import { formatDistanceToNow } from "date-fns";
+import toast from "react-hot-toast";
+import { db } from "@/lib/firebase";
+import { doc, updateDoc, increment } from "firebase/firestore";
+
+interface DealCardProps {
+  deal: Deal;
+}
+
+export default function DealCard({ deal }: DealCardProps) {
+  const shareLink = `${window.location.origin}/deal/${deal.id}`;
+
+  const copyToClipboard = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    navigator.clipboard.writeText(shareLink);
+    toast.success("Link copied to clipboard!");
+  };
+
+  const handleShare = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: deal.title,
+          text: `Check out this amazing deal: ${deal.offerPercentage}% OFF!`,
+          url: shareLink,
+        });
+      } catch (err) {
+        console.error("Share failed:", err);
+      }
+    } else {
+      copyToClipboard(e);
+    }
+  };
+
+  const statusColors = {
+    live: "bg-red-500",
+    upcoming: "bg-blue-500",
+    ended: "bg-gray-500",
+  };
+
+  return (
+    <motion.div
+      layout
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      whileHover={{ y: -8 }}
+      className="group relative bg-card rounded-3xl overflow-hidden shadow-lg border border-border transition-all duration-300"
+    >
+      {/* Image Container */}
+      <Link href={`/deal/${deal.id}`} className="block relative aspect-[4/5] overflow-hidden">
+        <Image
+          src={deal.imageUrl}
+          alt={deal.title}
+          fill
+          className="object-cover group-hover:scale-110 transition-transform duration-500"
+          sizes="(max-width: 768px) 50vw, (max-width: 1200px) 25vw, 20vw"
+        />
+        
+        {/* Badges */}
+        <div className="absolute top-3 left-3 flex flex-col gap-2">
+          {deal.offerPercentage > 0 && !(deal.dealType === 'earn' || deal.category === 'Earn Money') && (
+            <div className="bg-orange-500 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg">
+              {deal.offerPercentage}% OFF
+            </div>
+          )}
+          {deal.status === 'live' && (
+            <div className="bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded-full flex items-center gap-1 animate-live">
+              <span className="w-1.5 h-1.5 bg-white rounded-full"></span>
+              LIVE
+            </div>
+          )}
+          {deal.status === 'ended' && (
+            <div className="bg-gray-500 text-white text-[10px] font-bold px-2 py-1 rounded-full flex items-center gap-1">
+              <span className="w-1.5 h-1.5 bg-white/50 rounded-full"></span>
+              ENDED
+            </div>
+          )}
+          {deal.status === 'upcoming' && (
+            <div className="bg-blue-500 text-white text-[10px] font-bold px-2 py-1 rounded-full flex items-center gap-1">
+              <span className="w-1.5 h-1.5 bg-white rounded-full"></span>
+              UPCOMING
+            </div>
+          )}
+
+        </div>
+
+        {/* Category & Platform Tags - Only for Shopping Deals */}
+        {!(deal.dealType === 'earn' || deal.category === 'Earn Money') && (
+          <div className="absolute bottom-3 left-3 flex gap-2">
+            <div className="glass px-3 py-1 rounded-full text-[10px] font-semibold text-foreground uppercase tracking-wider">
+              {deal.category}
+            </div>
+            <div className="bg-black/50 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-bold text-white uppercase tracking-wider">
+              {deal.platform}
+            </div>
+          </div>
+        )}
+      </Link>
+
+      {/* Content */}
+      <div className="p-4">
+        <Link href={`/deal/${deal.id}`}>
+          <h3 className="font-bold text-sm md:text-base line-clamp-2 min-h-[2.5rem] group-hover:text-orange-500 transition-colors">
+            {deal.title}
+          </h3>
+        </Link>
+
+        {deal.price > 0 && !(deal.dealType === 'earn' || deal.category === 'Earn Money') && (
+          <div className="mt-2 flex items-center gap-2">
+            <span className="text-lg font-black text-foreground">₹{deal.price}</span>
+            {deal.originalPrice > 0 && (
+              <span className="text-xs text-muted-foreground line-through font-medium">₹{deal.originalPrice}</span>
+            )}
+          </div>
+        )}
+
+        <div className="mt-3 flex items-center justify-between">
+          <div className="flex items-center gap-1.5 text-muted-foreground text-[10px] font-medium">
+            <Clock size={12} />
+            {formatDistanceToNow(deal.createdAt instanceof Date ? deal.createdAt : (deal.createdAt as any).toDate())} ago
+          </div>
+          
+          <div className="flex gap-2">
+            <button
+              onClick={copyToClipboard}
+              className="p-2 rounded-full hover:bg-orange-500/10 transition-colors text-muted-foreground hover:text-orange-500"
+              title="Copy link"
+            >
+              <LinkIcon size={16} />
+            </button>
+            <button
+              onClick={handleShare}
+              className="p-2 rounded-full hover:bg-orange-500/10 transition-colors text-muted-foreground hover:text-orange-500"
+              title="Share deal"
+            >
+              <Share2 size={16} />
+            </button>
+          </div>
+        </div>
+
+        <a
+          href={deal.redirectUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={async () => {
+            try {
+              const dealRef = doc(db, "deals", deal.id);
+              await updateDoc(dealRef, {
+                clickCount: increment(1)
+              });
+            } catch (error) {
+              console.error("Error tracking click:", error);
+            }
+          }}
+          className="mt-4 w-full btn-primary py-2.5 text-sm flex items-center justify-center gap-2 group/btn"
+        >
+          Grab Deal
+          <ExternalLink size={14} className="group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
+        </a>
+      </div>
+    </motion.div>
+  );
+}
