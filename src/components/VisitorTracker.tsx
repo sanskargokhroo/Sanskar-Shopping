@@ -25,10 +25,14 @@ export default function VisitorTracker() {
         const querySnapshot = await getDocs(q);
 
         if (querySnapshot.empty) {
+          const isStandalone = window.matchMedia('(display-mode: standalone)').matches || (window.navigator as any).standalone || document.referrer.includes('android-app://');
+          
           await addDoc(collection(db, "visitors"), {
             visitorId,
             timestamp: serverTimestamp(),
-            platform: typeof window !== 'undefined' && /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ? "mobile" : "web"
+            userAgent: navigator.userAgent,
+            isApp: isStandalone,
+            platform: isStandalone ? "app" : "web"
           });
         }
 

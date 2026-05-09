@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
-import { collection, query, orderBy, onSnapshot, deleteDoc, doc, updateDoc } from "firebase/firestore";
+import { collection, query, orderBy, onSnapshot, deleteDoc, doc, updateDoc, where } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { Deal } from "@/types";
 import { 
@@ -58,14 +58,14 @@ export default function AdminDashboard() {
       setLoading(false);
     });
 
-    // App Users Listener (FCM Tokens)
+    // App Users Listener (FCM Tokens - Most reliable for installs)
     const tokensQuery = query(collection(db, "fcm_tokens"));
     const unsubscribeTokens = onSnapshot(tokensQuery, (snapshot) => {
       setUserCount(snapshot.size);
     });
-
-    // Web Users Listener (Visitors)
-    const visitorsQuery = query(collection(db, "visitors"));
+    
+    // Web Users Listener (Visitors who are NOT in App mode)
+    const visitorsQuery = query(collection(db, "visitors"), where("platform", "==", "web"));
     const unsubscribeVisitors = onSnapshot(visitorsQuery, (snapshot) => {
       setWebUserCount(snapshot.size);
     });
