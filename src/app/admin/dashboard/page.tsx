@@ -28,6 +28,15 @@ export default function AdminDashboard() {
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => { document.body.style.overflow = 'unset'; };
+  }, [isMenuOpen]);
+
+  useEffect(() => {
     if (!authLoading && !user) {
       router.push("/admin/login");
     }
