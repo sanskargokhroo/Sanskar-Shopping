@@ -70,7 +70,7 @@ export default function Navbar() {
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 group">
           <div className="w-12 h-12 relative flex items-center justify-center group-hover:scale-110 transition-transform bg-transparent border-none shadow-none">
-            <Image src="/logo1.png" alt="Logo" fill className="object-contain" />
+            <Image src="/logo7.png" alt="Logo" fill className="object-contain" />
           </div>
           <span className="text-xl font-black tracking-tight gradient-text">
             Sanskar Shopping
@@ -147,7 +147,7 @@ export default function Navbar() {
         >
           <div className="flex items-center justify-between mb-10">
             <div className="flex items-center gap-3">
-              <Image src="/logo1.png" alt="Logo" width={40} height={40} className="object-contain" />
+              <Image src="/logo7.png" alt="Logo" width={40} height={40} className="object-contain" />
               <span className="font-bold text-xl tracking-tight">Sanskar Shopping</span>
             </div>
             <button 

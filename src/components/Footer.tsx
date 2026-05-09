@@ -14,7 +14,7 @@ export default function Footer() {
           <div className="space-y-6">
             <Link href="/" className="flex items-center gap-2 group">
               <div className="w-10 h-10 relative">
-                <Image src="/logo1.png" alt="Logo" fill className="object-contain" />
+                <Image src="/logo7.png" alt="Logo" fill className="object-contain" />
               </div>
               <span className="text-xl font-bold tracking-tight">
                 Sanskar <span className="gradient-text">Shopping</span>

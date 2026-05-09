@@ -21,9 +21,12 @@ export const metadata: Metadata = {
     title: "Sanskar Shopping",
   },
   icons: {
-    icon: '/logo1.png',
-    shortcut: '/logo1.png',
-    apple: '/logo1.png',
+    icon: [
+      { url: '/favicon.ico?v=3' },
+      { url: '/logo7.png?v=3', sizes: '32x32', type: 'image/png' },
+    ],
+    shortcut: '/favicon.ico?v=3',
+    apple: '/apple-touch-icon.png?v=3',
   },
 };
 
@@ -34,9 +37,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        <link rel="icon" href="/app-logo-v1.png" sizes="any" />
-      </head>
       <body className={`${outfit.variable} font-sans min-h-screen flex flex-col`}>
         <AuthProvider>
           <ThemeProvider>

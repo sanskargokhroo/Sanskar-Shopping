@@ -94,21 +94,21 @@ export default function HeroSlider() {
   const currentBanner = banners[currentIndex];
 
   return (
-    <section className="relative w-full h-[280px] md:h-[600px] mb-16 group">
+    <section className="relative w-full aspect-[16/9] md:h-[600px] mb-16 group">
       <AnimatePresence mode="wait">
         <motion.div
           key={currentBanner.id}
-          initial={{ opacity: 0, scale: 1.05 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.95 }}
-          transition={{ duration: 0.7, ease: "easeInOut" }}
-          className="absolute inset-0 rounded-[3rem] overflow-hidden"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.5 }}
+          className="absolute inset-0 rounded-[2rem] md:rounded-[3rem] overflow-hidden bg-black"
         >
           <Image 
             src={currentBanner.imageUrl} 
             alt={currentBanner.title} 
             fill 
-            className="object-cover"
+            className="object-contain md:object-cover"
             priority
           />
           <div className="absolute inset-0 bg-black/40 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex items-center justify-center text-center p-8">
