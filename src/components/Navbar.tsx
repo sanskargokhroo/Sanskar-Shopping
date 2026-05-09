@@ -21,16 +21,38 @@ import Image from "next/image";
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+  const [showInstallBtn, setShowInstallBtn] = useState(false);
   const pathname = usePathname();
   const { user } = useAuth();
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
+    const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+
+    const handleBeforeInstallPrompt = (e: any) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+      setShowInstallBtn(true);
+    };
+
+    window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+    };
   }, []);
+
+  const handleInstallClick = async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === 'accepted') {
+      setDeferredPrompt(null);
+      setShowInstallBtn(false);
+    }
+  };
 
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? "glass shadow-lg py-2" : "bg-transparent py-4"}`}>
@@ -60,6 +82,15 @@ export default function Navbar() {
 
         {/* Actions */}
         <div className="flex items-center gap-2">
+          {showInstallBtn && (
+            <button
+              onClick={handleInstallClick}
+              className="hidden md:flex items-center gap-2 px-4 py-2 bg-orange-500 text-white rounded-xl font-bold text-sm hover:bg-orange-600 transition-all shadow-lg shadow-orange-500/20"
+            >
+              <Download size={16} /> Install App
+            </button>
+          )}
+
           {user ? (
             <Link href="/admin/dashboard" className="p-2 rounded-xl hover:bg-orange-500/10 transition-colors text-orange-500" title="Admin Dashboard">
               <LayoutDashboard size={20} />
@@ -100,6 +131,15 @@ export default function Navbar() {
                   <span className="font-semibold">{item.name}</span>
                 </Link>
               ))}
+              
+              {showInstallBtn && (
+                <button
+                  onClick={handleInstallClick}
+                  className="w-full mt-4 flex items-center justify-center gap-3 p-5 bg-orange-500 text-white rounded-[2rem] font-black text-lg shadow-xl shadow-orange-500/20"
+                >
+                  <Download size={24} /> Install Mobile App
+                </button>
+              )}
             </div>
           </motion.div>
         )}

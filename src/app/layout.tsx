@@ -14,6 +14,12 @@ const outfit = Outfit({
 export const metadata: Metadata = {
   title: "Sanskar Shopping | Premium Deals",
   description: "Discover the best shopping deals, handpicked for you. Modern, fast, and secure.",
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Sanskar Shopping",
+  },
   icons: {
     icon: '/logo1.png',
     shortcut: '/logo1.png',
