@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ShoppingBag, Home, TrendingUp, LayoutGrid, Info, Sun, Moon, LogIn, LayoutDashboard } from "lucide-react";
+import { Menu, X, ShoppingBag, Home, TrendingUp, LayoutGrid, Info, LogIn, LayoutDashboard, Download, LogOut } from "lucide-react";
 import { useTheme } from "@/context/ThemeContext";
 import { useAuth } from "@/context/AuthContext";
 
@@ -110,25 +110,49 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu Backdrop */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden glass border-t border-white/10 overflow-hidden"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setIsOpen(false)}
+            className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40 lg:hidden"
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Mobile Menu Content */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ x: "100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "100%" }}
+            transition={{ type: "spring", damping: 25, stiffness: 200 }}
+            className="fixed top-0 right-0 bottom-0 w-[80%] max-w-sm bg-background z-50 lg:hidden shadow-2xl p-6 flex flex-col"
           >
-            <div className="container mx-auto px-4 py-6 flex flex-col gap-4">
+            <div className="flex items-center justify-between mb-8">
+              <div className="flex items-center gap-2">
+                <Image src="/logo1.png" alt="Logo" width={32} height={32} className="object-contain" />
+                <span className="font-bold text-lg">Sanskar Shopping</span>
+              </div>
+              <button onClick={() => setIsOpen(false)} className="p-2 rounded-xl hover:bg-orange-500/10 transition-colors">
+                <X size={24} />
+              </button>
+            </div>
+
+            <div className="flex flex-col gap-2">
               {navItems.map((item) => (
                 <Link
                   key={item.name}
                   href={item.href}
                   onClick={() => setIsOpen(false)}
-                  className={`flex items-center gap-4 p-4 rounded-2xl transition-all ${pathname === item.href ? "bg-orange-500 text-white shadow-lg shadow-orange-500/30" : "hover:bg-orange-500/10"}`}
+                  className={`flex items-center gap-4 p-4 rounded-2xl transition-all ${pathname === item.href ? "bg-orange-500 text-white shadow-lg shadow-orange-500/20" : "hover:bg-orange-500/5"}`}
                 >
                   <item.icon size={20} />
-                  <span className="font-semibold">{item.name}</span>
+                  <span className="font-semibold text-lg">{item.name}</span>
                 </Link>
               ))}
               
