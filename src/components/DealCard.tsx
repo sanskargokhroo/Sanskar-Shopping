@@ -2,7 +2,6 @@
 
 import React from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { motion } from "framer-motion";
 import { Share2, Link as LinkIcon, ExternalLink, Clock } from "lucide-react";
 import { Deal } from "@/types";
@@ -43,10 +42,15 @@ export default function DealCard({ deal }: DealCardProps) {
     }
   };
 
-  const statusColors = {
-    live: "bg-red-500",
-    upcoming: "bg-blue-500",
-    ended: "bg-gray-500",
+  const handleRedirect = async () => {
+    try {
+      const dealRef = doc(db, "deals", deal.id);
+      await updateDoc(dealRef, {
+        clickCount: increment(1)
+      });
+    } catch (error) {
+      console.error("Error tracking click:", error);
+    }
   };
 
   return (
@@ -57,8 +61,14 @@ export default function DealCard({ deal }: DealCardProps) {
       whileHover={{ y: -8 }}
       className="group relative bg-card rounded-3xl overflow-hidden shadow-lg border border-border transition-all duration-300"
     >
-      {/* Image Container */}
-      <Link href={`/deal/${deal.id}`} className="block relative aspect-[4/5] overflow-hidden">
+      {/* Image Container - Direct Redirect */}
+      <a 
+        href={deal.redirectUrl} 
+        target="_blank" 
+        rel="noopener noreferrer"
+        onClick={handleRedirect}
+        className="block relative aspect-[4/5] overflow-hidden"
+      >
         <Image
           src={deal.imageUrl}
           alt={deal.title}
@@ -80,22 +90,9 @@ export default function DealCard({ deal }: DealCardProps) {
               LIVE
             </div>
           )}
-          {deal.status === 'ended' && (
-            <div className="bg-gray-500 text-white text-[10px] font-bold px-2 py-1 rounded-full flex items-center gap-1">
-              <span className="w-1.5 h-1.5 bg-white/50 rounded-full"></span>
-              ENDED
-            </div>
-          )}
-          {deal.status === 'upcoming' && (
-            <div className="bg-blue-500 text-white text-[10px] font-bold px-2 py-1 rounded-full flex items-center gap-1">
-              <span className="w-1.5 h-1.5 bg-white rounded-full"></span>
-              UPCOMING
-            </div>
-          )}
-
         </div>
 
-        {/* Category & Platform Tags - Only for Shopping Deals */}
+        {/* Category & Platform Tags */}
         {!(deal.dealType === 'earn' || deal.category === 'Earn Money') && (
           <div className="absolute bottom-3 left-3 flex gap-2">
             <div className="glass px-3 py-1 rounded-full text-[10px] font-semibold text-foreground uppercase tracking-wider">
@@ -106,15 +103,21 @@ export default function DealCard({ deal }: DealCardProps) {
             </div>
           </div>
         )}
-      </Link>
+      </a>
 
       {/* Content */}
       <div className="p-4">
-        <Link href={`/deal/${deal.id}`}>
+        {/* Title - Direct Redirect */}
+        <a 
+          href={deal.redirectUrl} 
+          target="_blank" 
+          rel="noopener noreferrer"
+          onClick={handleRedirect}
+        >
           <h3 className="font-bold text-sm md:text-base line-clamp-2 min-h-[2.5rem] group-hover:text-orange-500 transition-colors">
             {deal.title}
           </h3>
-        </Link>
+        </a>
 
         {deal.price > 0 && !(deal.dealType === 'earn' || deal.category === 'Earn Money') && (
           <div className="mt-2 flex items-center gap-2">
@@ -149,23 +152,15 @@ export default function DealCard({ deal }: DealCardProps) {
           </div>
         </div>
 
+        {/* Action Button */}
         <a
           href={deal.redirectUrl}
           target="_blank"
           rel="noopener noreferrer"
-          onClick={async () => {
-            try {
-              const dealRef = doc(db, "deals", deal.id);
-              await updateDoc(dealRef, {
-                clickCount: increment(1)
-              });
-            } catch (error) {
-              console.error("Error tracking click:", error);
-            }
-          }}
+          onClick={handleRedirect}
           className="mt-4 w-full btn-primary py-2.5 text-sm flex items-center justify-center gap-2 group/btn"
         >
-          Grab Deal
+          {deal.dealType === 'earn' || deal.category === 'Earn Money' ? 'Start Earning' : 'Grab Deal'}
           <ExternalLink size={14} className="group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
         </a>
       </div>
