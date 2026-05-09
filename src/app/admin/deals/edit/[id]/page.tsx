@@ -15,7 +15,7 @@ import Link from "next/link";
 import toast from "react-hot-toast";
 import Image from "next/image";
 
-const CATEGORIES = ["Electronics", "Fashion", "Home", "Beauty", "Groceries", "Services", "Earn Money", "Other"];
+const CATEGORIES = ["Electronics", "Fashion", "Home", "Beauty", "Food & Groceries", "Services", "Earn Money", "Other"];
 const PLATFORMS = ["Amazon", "Flipkart", "Shopsy", "Myntra", "Shein", "Other"];
 
 export default function EditDeal() {

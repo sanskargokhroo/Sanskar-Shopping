@@ -75,7 +75,7 @@ export default function ShoppingPage() {
     setFilteredDeals(result);
   }, [searchTerm, selectedCategory, selectedPlatform, sortBy, deals]);
 
-  const categories = ["Electronics", "Fashion", "Home", "Beauty", "Groceries", "Earn Money", "Other"];
+  const categories = ["Electronics", "Fashion", "Home", "Beauty", "Food & Groceries", "Earn Money", "Other"];
   const platforms = ["Amazon", "Flipkart"];
 
   return (

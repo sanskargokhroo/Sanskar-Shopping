@@ -14,7 +14,7 @@ const CATEGORIES_CONFIG = [
   { name: "Fashion", icon: Shirt, color: "text-pink-500", bg: "bg-pink-500/10" },
   { name: "Home", icon: Home, color: "text-orange-500", bg: "bg-orange-500/10" },
   { name: "Beauty", icon: Sparkles, color: "text-purple-500", bg: "bg-purple-500/10" },
-  { name: "Groceries", icon: ShoppingBasket, color: "text-green-500", bg: "bg-green-500/10" },
+  { name: "Food & Groceries", icon: ShoppingBasket, color: "text-green-500", bg: "bg-green-500/10" },
   { name: "Services", icon: Gift, color: "text-indigo-500", bg: "bg-indigo-500/10" },
 ];
 

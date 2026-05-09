@@ -30,10 +30,15 @@ export default function Footer() {
           <div>
             <h4 className="font-black text-lg mb-6 uppercase tracking-widest text-foreground/50">Quick Links</h4>
             <ul className="space-y-4">
-              {["Home", "Shopping", "Upcoming Sales", "Earn Money"].map((link) => (
-                <li key={link}>
-                  <Link href={`/${link.toLowerCase().replace(" ", "-")}`} className="text-muted-foreground hover:text-orange-500 font-bold transition-colors">
-                    {link}
+              {[
+                { name: "Home", href: "/" },
+                { name: "Shopping", href: "/shopping" },
+                { name: "Earn Money", href: "/earn" },
+                { name: "Categories", href: "/categories" }
+              ].map((link) => (
+                <li key={link.name}>
+                  <Link href={link.href} className="text-muted-foreground hover:text-orange-500 font-bold transition-colors">
+                    {link.name}
                   </Link>
                 </li>
               ))}
@@ -44,7 +49,7 @@ export default function Footer() {
           <div>
             <h4 className="font-black text-lg mb-6 uppercase tracking-widest text-foreground/50">Categories</h4>
             <ul className="space-y-4">
-              {["Electronics", "Fashion", "Home & Living", "Beauty & Care", "Groceries"].map((cat) => (
+              {["Electronics", "Fashion", "Home & Living", "Beauty & Care", "Food & Groceries"].map((cat) => (
                 <li key={cat}>
                   <Link href={`/shopping?category=${cat}`} className="text-muted-foreground hover:text-orange-500 font-bold transition-colors">
                     {cat}
