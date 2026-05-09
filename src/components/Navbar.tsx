@@ -64,6 +64,7 @@ export default function Navbar() {
   };
 
   return (
+    <>
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? "glass shadow-lg py-2" : "bg-transparent py-4"}`}>
       <div className="container mx-auto px-4 flex items-center justify-between">
         {/* Logo */}
@@ -119,64 +120,77 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Menu Backdrop */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setIsOpen(false)}
-            className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40 lg:hidden"
-          />
-        )}
-      </AnimatePresence>
-
-      {/* Mobile Menu Content */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ x: "100%" }}
-            animate={{ x: 0 }}
-            exit={{ x: "100%" }}
-            transition={{ type: "spring", damping: 25, stiffness: 200 }}
-            className="fixed top-0 right-0 bottom-0 w-[80%] max-w-sm bg-[#09090b] z-50 lg:hidden shadow-2xl p-6 flex flex-col border-l border-white/5"
-          >
-            <div className="flex items-center justify-between mb-8">
-              <div className="flex items-center gap-2">
-                <Image src="/logo1.png" alt="Logo" width={32} height={32} className="object-contain" />
-                <span className="font-bold text-lg">Sanskar Shopping</span>
-              </div>
-              <button onClick={() => setIsOpen(false)} className="p-2 rounded-xl hover:bg-orange-500/10 transition-colors">
-                <X size={24} />
-              </button>
-            </div>
-
-            <div className="flex flex-col gap-2">
-              {navItems.map((item) => (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  onClick={() => setIsOpen(false)}
-                  className={`flex items-center gap-4 p-4 rounded-2xl transition-all ${pathname === item.href ? "bg-orange-500 text-white shadow-lg shadow-orange-500/20" : "hover:bg-orange-500/5"}`}
-                >
-                  <item.icon size={20} />
-                  <span className="font-semibold text-lg">{item.name}</span>
-                </Link>
-              ))}
-              
-              {showInstallBtn && (
-                <button
-                  onClick={handleInstallClick}
-                  className="w-full mt-4 flex items-center justify-center gap-3 p-5 bg-orange-500 text-white rounded-[2rem] font-black text-lg shadow-xl shadow-orange-500/20"
-                >
-                  <Download size={24} /> Install Mobile App
-                </button>
-              )}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </nav>
+
+    {/* Mobile Menu Backdrop */}
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={() => setIsOpen(false)}
+          className="fixed inset-0 bg-black/80 backdrop-blur-md z-[60] lg:hidden"
+        />
+      )}
+    </AnimatePresence>
+
+    {/* Mobile Menu Content */}
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div
+          initial={{ x: "100%" }}
+          animate={{ x: 0 }}
+          exit={{ x: "100%" }}
+          transition={{ type: "spring", damping: 25, stiffness: 200 }}
+          className="fixed top-0 right-0 bottom-0 w-[85%] max-w-sm bg-black z-[70] lg:hidden shadow-2xl p-6 flex flex-col border-l border-white/10"
+        >
+          <div className="flex items-center justify-between mb-10">
+            <div className="flex items-center gap-3">
+              <Image src="/logo1.png" alt="Logo" width={40} height={40} className="object-contain" />
+              <span className="font-bold text-xl tracking-tight">Sanskar Shopping</span>
+            </div>
+            <button 
+              onClick={() => setIsOpen(false)} 
+              className="p-3 rounded-2xl bg-white/5 text-white hover:bg-orange-500 transition-colors"
+            >
+              <X size={24} />
+            </button>
+          </div>
+
+          <div className="flex flex-col gap-3">
+            {navItems.map((item) => (
+              <Link
+                key={item.name}
+                href={item.href}
+                onClick={() => setIsOpen(false)}
+                className={`flex items-center gap-5 p-5 rounded-[2rem] transition-all ${
+                  pathname === item.href 
+                  ? "bg-orange-500 text-white shadow-xl shadow-orange-500/30" 
+                  : "hover:bg-white/5 text-gray-400 hover:text-white"
+                }`}
+              >
+                <item.icon size={24} />
+                <span className="font-bold text-xl">{item.name}</span>
+              </Link>
+            ))}
+            
+            {showInstallBtn && (
+              <button
+                onClick={handleInstallClick}
+                className="w-full mt-6 flex items-center justify-center gap-4 p-6 bg-gradient-to-r from-orange-500 to-pink-500 text-white rounded-[2.5rem] font-black text-xl shadow-2xl shadow-orange-500/20"
+              >
+                <Download size={28} /> Install App
+              </button>
+            )}
+          </div>
+          
+          <div className="mt-auto pt-10 border-t border-white/5 text-center">
+            <p className="text-gray-500 text-sm font-bold">Premium Shopping Experience</p>
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+    </>
   );
 }
