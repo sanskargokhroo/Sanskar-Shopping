@@ -26,6 +26,8 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [userCount, setUserCount] = useState(0);
+  const [webUserCount, setWebUserCount] = useState(0);
 
   useEffect(() => {
     if (isMenuOpen) {
@@ -45,6 +47,7 @@ export default function AdminDashboard() {
   useEffect(() => {
     if (!user) return;
 
+    // Deals Listener
     const q = query(collection(db, "deals"), orderBy("createdAt", "desc"));
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const dealsData = snapshot.docs.map((doc) => ({
@@ -55,7 +58,23 @@ export default function AdminDashboard() {
       setLoading(false);
     });
 
-    return () => unsubscribe();
+    // App Users Listener (FCM Tokens)
+    const tokensQuery = query(collection(db, "fcm_tokens"));
+    const unsubscribeTokens = onSnapshot(tokensQuery, (snapshot) => {
+      setUserCount(snapshot.size);
+    });
+
+    // Web Users Listener (Visitors)
+    const visitorsQuery = query(collection(db, "visitors"));
+    const unsubscribeVisitors = onSnapshot(visitorsQuery, (snapshot) => {
+      setWebUserCount(snapshot.size);
+    });
+
+    return () => {
+      unsubscribe();
+      unsubscribeTokens();
+      unsubscribeVisitors();
+    };
   }, [user]);
 
   const handleDelete = async (id: string) => {
@@ -186,10 +205,10 @@ export default function AdminDashboard() {
         {/* Stats Grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           {[
-            { label: "Total Deals", value: stats.total, icon: BarChart3, color: "text-purple-500", bg: "bg-purple-500/10" },
+            { label: "Web Users", value: webUserCount, icon: ExternalLink, color: "text-blue-500", bg: "bg-blue-500/10" },
+            { label: "App Users", value: userCount, icon: ShoppingBag, color: "text-orange-500", bg: "bg-orange-500/10" },
+            { label: "Total Clicks", value: deals.reduce((acc, d) => acc + (d.clickCount || 0), 0), icon: BarChart3, color: "text-purple-500", bg: "bg-purple-500/10" },
             { label: "Live Deals", value: stats.live, icon: CheckCircle2, color: "text-green-500", bg: "bg-green-500/10" },
-            { label: "Upcoming", value: stats.upcoming, icon: Clock, color: "text-blue-500", bg: "bg-blue-500/10" },
-            { label: "Expired", value: stats.expired, icon: XCircle, color: "text-red-500", bg: "bg-red-500/10" },
           ].map((stat) => (
             <div key={stat.label} className="glass-card p-6 rounded-3xl">
               <div className={`w-12 h-12 ${stat.bg} rounded-2xl flex items-center justify-center mb-4`}>
@@ -212,7 +231,7 @@ export default function AdminDashboard() {
                 placeholder="Search deals..." 
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 pr-4 py-2 bg-white rounded-xl border border-border focus:border-orange-500 outline-none w-64"
+                className="pl-10 pr-4 py-2 bg-white/5 text-white rounded-xl border border-white/10 focus:border-orange-500 outline-none w-64 transition-all"
               />
             </div>
           </div>

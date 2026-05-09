@@ -1,0 +1,45 @@
+"use client";
+
+import { useEffect } from "react";
+import { db } from "@/lib/firebase";
+import { collection, addDoc, query, where, getDocs, serverTimestamp } from "firebase/firestore";
+
+export default function VisitorTracker() {
+  useEffect(() => {
+    const trackVisitor = async () => {
+      try {
+        // Check if visitor is already tracked in this session
+        const isTracked = sessionStorage.getItem("visitor_tracked");
+        if (isTracked) return;
+
+        // Simple unique ID for the visitor (stored in localStorage)
+        let visitorId = localStorage.getItem("visitor_id");
+        if (!visitorId) {
+          visitorId = Math.random().toString(36).substring(2, 15);
+          localStorage.setItem("visitor_id", visitorId);
+        }
+
+        // Add to visitors collection if not already there for today
+        // Or just count total unique visitors
+        const q = query(collection(db, "visitors"), where("visitorId", "==", visitorId));
+        const querySnapshot = await getDocs(q);
+
+        if (querySnapshot.empty) {
+          await addDoc(collection(db, "visitors"), {
+            visitorId,
+            timestamp: serverTimestamp(),
+            platform: typeof window !== 'undefined' && /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ? "mobile" : "web"
+          });
+        }
+
+        sessionStorage.setItem("visitor_tracked", "true");
+      } catch (error) {
+        console.error("Visitor tracking failed:", error);
+      }
+    };
+
+    trackVisitor();
+  }, []);
+
+  return null;
+}

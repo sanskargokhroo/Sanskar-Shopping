@@ -178,9 +178,9 @@ export default function Navbar() {
             {showInstallBtn && (
               <button
                 onClick={handleInstallClick}
-                className="w-full mt-6 flex items-center justify-center gap-4 p-6 bg-gradient-to-r from-orange-500 to-pink-500 text-white rounded-[2.5rem] font-black text-xl shadow-2xl shadow-orange-500/20"
+                className="w-full mt-4 flex items-center justify-center gap-3 p-4 bg-gradient-to-r from-orange-500 to-pink-500 text-white rounded-2xl font-bold text-lg shadow-lg shadow-orange-500/20"
               >
-                <Download size={28} /> Install App
+                <Download size={22} /> Install App
               </button>
             )}
           </div>
