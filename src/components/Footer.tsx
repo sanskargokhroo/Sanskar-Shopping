@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ShoppingBag, Globe, Send, Share2, Mail, MapPin, Phone, MessageCircle } from "lucide-react";
+import { ShoppingBag, Globe, MessageCircle } from "lucide-react";
 
 export default function Footer() {
   return (
@@ -23,18 +23,7 @@ export default function Footer() {
             <p className="text-muted-foreground font-medium leading-relaxed">
               Your ultimate destination for the most amazing shopping deals and discounts. We bring the best of the web to your fingertips.
             </p>
-            <div className="flex gap-4">
-              {[MessageCircle, Globe, Send, Share2].map((Icon, i) => (
-                <a 
-                  key={i} 
-                  href={Icon === MessageCircle ? "https://chat.whatsapp.com/LxhFB9qFyOx2bt4eBbwq0R" : "#"} 
-                  target={Icon === MessageCircle ? "_blank" : undefined}
-                  className="w-10 h-10 rounded-xl bg-muted flex items-center justify-center hover:bg-green-500 hover:text-white transition-all"
-                >
-                  <Icon size={20} />
-                </a>
-              ))}
-            </div>
+
           </div>
 
           {/* Quick Links */}
