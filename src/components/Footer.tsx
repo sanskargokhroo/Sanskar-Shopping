@@ -89,7 +89,7 @@ export default function Footer() {
 
         <div className="pt-10 border-t border-border text-center">
           <p className="text-muted-foreground text-sm font-bold">
-            © 2026 Sanskar Shopping. All rights reserved. | by Sanskar Gokhroo
+            © 2026 | All rights reserved | Sanskar Solution | Sanskar Gokhroo
           </p>
         </div>
       </div>
