@@ -14,6 +14,11 @@ const outfit = Outfit({
 export const metadata: Metadata = {
   title: "Sanskar Shopping | Premium Deals",
   description: "Discover the best shopping deals, handpicked for you. Modern, fast, and secure.",
+  icons: {
+    icon: '/app-logo-v1.png',
+    shortcut: '/app-logo-v1.png',
+    apple: '/app-logo-v1.png',
+  },
 };
 
 export default function RootLayout({
@@ -23,6 +28,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <link rel="icon" href="/app-logo-v1.png" sizes="any" />
+      </head>
       <body className={`${outfit.variable} font-sans min-h-screen flex flex-col`}>
         <AuthProvider>
           <ThemeProvider>

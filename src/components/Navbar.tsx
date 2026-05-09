@@ -16,6 +16,8 @@ const navItems = [
   { name: "About", href: "/about", icon: Info },
 ];
 
+import Image from "next/image";
+
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -36,8 +38,8 @@ export default function Navbar() {
       <div className="container mx-auto px-4 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 group">
-          <div className="w-10 h-10 bg-gradient-to-tr from-orange-500 to-pink-600 rounded-xl flex items-center justify-center shadow-lg group-hover:rotate-12 transition-transform">
-            <ShoppingBag className="text-white w-6 h-6" />
+          <div className="w-10 h-10 relative group-hover:rotate-12 transition-transform">
+            <Image src="/logo.png" alt="Logo" fill className="object-contain" />
           </div>
           <span className="text-xl font-black tracking-tight gradient-text">
             Sanskar Shopping
