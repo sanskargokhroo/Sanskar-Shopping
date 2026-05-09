@@ -82,7 +82,7 @@ export default function HeroSlider() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
           >
-            <Link href="/shopping" className="btn-primary bg-white text-black hover:bg-orange-50 px-12 py-5 text-xl rounded-2xl shadow-xl shadow-black/10">
+            <Link href="/shopping" className="btn-primary bg-white text-black hover:bg-orange-50 px-8 py-3.5 text-lg rounded-2xl shadow-xl shadow-black/10">
               Explore Deals
             </Link>
           </motion.div>
@@ -134,8 +134,8 @@ export default function HeroSlider() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4, duration: 0.5 }}
               >
-                <Link href={currentBanner.link} className="btn-primary bg-orange-500 text-white hover:bg-orange-600 px-12 py-5 text-xl rounded-2xl shadow-xl shadow-orange-500/30 inline-flex items-center gap-2">
-                  Learn More <ArrowRight size={24} />
+                <Link href={currentBanner.link} className="btn-primary bg-orange-500 text-white hover:bg-orange-600 px-8 py-3.5 text-lg rounded-2xl shadow-xl shadow-orange-500/30 inline-flex items-center gap-2">
+                  Learn More <ArrowRight size={20} />
                 </Link>
               </motion.div>
             </div>

@@ -168,7 +168,7 @@ export default function DealDetails() {
 
                 <button 
                   onClick={handleGrabDeal}
-                  className="w-full btn-primary py-5 text-xl flex items-center justify-center gap-3 group/btn"
+                  className="w-full btn-primary py-3.5 text-lg flex items-center justify-center gap-3 group/btn"
                 >
                   Grab This Deal Now
                   <ExternalLink className="group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />

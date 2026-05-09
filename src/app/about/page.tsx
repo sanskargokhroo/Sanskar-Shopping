@@ -75,7 +75,7 @@ export default function AboutPage() {
               href="https://chat.whatsapp.com/LxhFB9qFyOx2bt4eBbwq0R" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="btn-primary px-12 py-5 text-xl inline-flex items-center gap-3 bg-green-500 hover:bg-green-600 border-none shadow-green-500/20"
+              className="btn-primary px-8 py-3.5 text-lg inline-flex items-center gap-3 bg-green-500 hover:bg-green-600 border-none shadow-green-500/20"
             >
               <MessageCircle size={24} /> Join WhatsApp Group
             </a>
