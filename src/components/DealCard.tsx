@@ -85,6 +85,12 @@ export default function DealCard({ deal }: DealCardProps) {
               LIVE
             </div>
           )}
+          {deal.status === 'ended' && (
+            <div className="bg-zinc-800 text-zinc-300 text-[10px] font-bold px-2 py-1 rounded-full flex items-center gap-1 border border-zinc-700">
+              <span className="w-1.5 h-1.5 bg-zinc-500 rounded-full"></span>
+              ENDED
+            </div>
+          )}
         </div>
 
       </a>

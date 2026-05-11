@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { db } from "@/lib/firebase";
-import { collection, addDoc, query, where, getDocs, serverTimestamp } from "firebase/firestore";
+import { collection, addDoc, query, where, getDocs, serverTimestamp, doc, updateDoc } from "firebase/firestore";
 
 export default function VisitorTracker() {
   useEffect(() => {
@@ -24,9 +24,9 @@ export default function VisitorTracker() {
         const q = query(collection(db, "visitors"), where("visitorId", "==", visitorId));
         const querySnapshot = await getDocs(q);
 
+        const isStandalone = window.matchMedia('(display-mode: standalone)').matches || (window.navigator as any).standalone || document.referrer.includes('android-app://');
+
         if (querySnapshot.empty) {
-          const isStandalone = window.matchMedia('(display-mode: standalone)').matches || (window.navigator as any).standalone || document.referrer.includes('android-app://');
-          
           await addDoc(collection(db, "visitors"), {
             visitorId,
             timestamp: serverTimestamp(),
@@ -34,6 +34,18 @@ export default function VisitorTracker() {
             isApp: isStandalone,
             platform: isStandalone ? "app" : "web"
           });
+        } else {
+          if (isStandalone) {
+            querySnapshot.forEach(async (docSnap) => {
+              const data = docSnap.data();
+              if (data.platform !== 'app') {
+                await updateDoc(doc(db, "visitors", docSnap.id), {
+                  isApp: true,
+                  platform: "app"
+                });
+              }
+            });
+          }
         }
 
         sessionStorage.setItem("visitor_tracked", "true");

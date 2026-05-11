@@ -58,9 +58,9 @@ export default function AdminDashboard() {
       setLoading(false);
     });
 
-    // App Users Listener (FCM Tokens - Most reliable for installs)
-    const tokensQuery = query(collection(db, "fcm_tokens"));
-    const unsubscribeTokens = onSnapshot(tokensQuery, (snapshot) => {
+    // App Users Listener (Visitors who are in App mode)
+    const appUsersQuery = query(collection(db, "visitors"), where("platform", "==", "app"));
+    const unsubscribeAppUsers = onSnapshot(appUsersQuery, (snapshot) => {
       setUserCount(snapshot.size);
     });
     
@@ -72,7 +72,7 @@ export default function AdminDashboard() {
 
     return () => {
       unsubscribe();
-      unsubscribeTokens();
+      unsubscribeAppUsers();
       unsubscribeVisitors();
     };
   }, [user]);

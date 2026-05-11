@@ -14,6 +14,7 @@ import {
 import Link from "next/link";
 import toast from "react-hot-toast";
 import Image from "next/image";
+import ImageCropper from "@/components/ImageCropper";
 
 const CATEGORIES = ["Electronics", "Fashion", "Home", "Beauty", "Food & Groceries", "Services", "Earn Money", "Other"];
 const PLATFORMS = ["Amazon", "Flipkart", "Shopsy", "Myntra", "Shein", "Other"];
@@ -26,6 +27,8 @@ export default function EditDeal() {
   const [loading, setLoading] = useState(false);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [showCropper, setShowCropper] = useState(false);
+  const [tempImageSrc, setTempImageSrc] = useState<string | null>(null);
 
   const [formData, setFormData] = useState({
     title: "",
@@ -92,11 +95,27 @@ export default function EditDeal() {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      setImageFile(file);
       const reader = new FileReader();
-      reader.onloadend = () => setImagePreview(reader.result as string);
+      reader.onloadend = () => {
+        setTempImageSrc(reader.result as string);
+        setShowCropper(true);
+      };
       reader.readAsDataURL(file);
+      e.target.value = '';
     }
+  };
+
+  const handleCropComplete = (croppedBlob: Blob) => {
+    const file = new File([croppedBlob], "cropped-image.jpg", { type: "image/jpeg" });
+    setImageFile(file);
+    setImagePreview(URL.createObjectURL(croppedBlob));
+    setShowCropper(false);
+    setTempImageSrc(null);
+  };
+
+  const handleCropCancel = () => {
+    setShowCropper(false);
+    setTempImageSrc(null);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -403,6 +422,15 @@ export default function EditDeal() {
           </div>
         </form>
       </div>
+
+      {showCropper && tempImageSrc && (
+        <ImageCropper
+          imageSrc={tempImageSrc}
+          onCropComplete={handleCropComplete}
+          onCancel={handleCropCancel}
+          aspect={4 / 5}
+        />
+      )}
     </div>
   );
 }
