@@ -65,7 +65,7 @@ export default function DealCard({ deal }: DealCardProps) {
       <a 
         href={deal.redirectUrl} 
         target="_blank" 
-        rel="noopener noreferrer"
+        rel="noopener"
         onClick={handleRedirect}
         className="block relative aspect-[4/5] overflow-hidden"
       >
@@ -101,7 +101,7 @@ export default function DealCard({ deal }: DealCardProps) {
         <a 
           href={deal.redirectUrl} 
           target="_blank" 
-          rel="noopener noreferrer"
+          rel="noopener"
           onClick={handleRedirect}
         >
           <h3 className="font-bold text-sm md:text-base line-clamp-2 min-h-[2.5rem] group-hover:text-orange-500 transition-colors">
@@ -151,7 +151,7 @@ export default function DealCard({ deal }: DealCardProps) {
         <a
           href={deal.redirectUrl}
           target="_blank"
-          rel="noopener noreferrer"
+          rel="noopener"
           onClick={handleRedirect}
           className="mt-4 w-full btn-primary py-2.5 text-xs font-bold flex items-center justify-center gap-2 group/btn"
         >

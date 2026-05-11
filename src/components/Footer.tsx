@@ -69,7 +69,7 @@ export default function Footer() {
                 </div>
                 <div>
                   <p className="text-xs font-black uppercase text-muted-foreground mb-1">WhatsApp Group</p>
-                  <a href="https://chat.whatsapp.com/LxhFB9qFyOx2bt4eBbwq0R" target="_blank" rel="noopener noreferrer" className="font-bold hover:text-green-500 transition-colors">
+                  <a href="https://chat.whatsapp.com/LxhFB9qFyOx2bt4eBbwq0R" target="_blank" rel="noopener" className="font-bold hover:text-green-500 transition-colors">
                     Click to Join Deals Channel
                   </a>
                 </div>
@@ -89,7 +89,9 @@ export default function Footer() {
 
         <div className="pt-10 border-t border-border text-center">
           <p className="text-muted-foreground text-sm font-bold">
-            © 2026 | All rights reserved | Sanskar Solution | Sanskar Gokhroo
+            <span className="block md:inline">© 2026 | All rights reserved</span>
+            <span className="hidden md:inline"> | </span>
+            <span className="block md:inline mt-1 md:mt-0">Sanskar Solution | Sanskar Gokhroo</span>
           </p>
         </div>
       </div>
