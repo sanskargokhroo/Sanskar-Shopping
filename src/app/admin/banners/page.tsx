@@ -17,6 +17,7 @@ import Link from "next/link";
 import toast from "react-hot-toast";
 import Image from "next/image";
 import { Banner } from "@/types";
+import ImageCropper from "@/components/ImageCropper";
 
 export default function ManageBanners() {
   const { user, loading: authLoading } = useAuth();
@@ -25,6 +26,8 @@ export default function ManageBanners() {
   const [loading, setLoading] = useState(false);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [showCropper, setShowCropper] = useState(false);
+  const [tempImageSrc, setTempImageSrc] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     title: "",
     subtitle: "",
@@ -51,9 +54,27 @@ export default function ManageBanners() {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
-      setImageFile(file);
-      setImagePreview(URL.createObjectURL(file));
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setTempImageSrc(reader.result as string);
+        setShowCropper(true);
+      };
+      reader.readAsDataURL(file);
+      e.target.value = '';
     }
+  };
+
+  const handleCropComplete = (croppedBlob: Blob) => {
+    const file = new File([croppedBlob], "cropped-banner.jpg", { type: "image/jpeg" });
+    setImageFile(file);
+    setImagePreview(URL.createObjectURL(croppedBlob));
+    setShowCropper(false);
+    setTempImageSrc(null);
+  };
+
+  const handleCropCancel = () => {
+    setShowCropper(false);
+    setTempImageSrc(null);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -126,7 +147,7 @@ export default function ManageBanners() {
                 <div>
                   <label className="block text-sm font-bold mb-2">Banner Image</label>
                   <div 
-                    className={`relative aspect-[16/9] rounded-2xl border-2 border-dashed border-border flex flex-col items-center justify-center overflow-hidden cursor-pointer hover:bg-muted/50 transition-colors ${imagePreview ? 'border-orange-500' : ''}`}
+                    className={`relative aspect-[16/4] rounded-2xl border-2 border-dashed border-border flex flex-col items-center justify-center overflow-hidden cursor-pointer hover:bg-muted/50 transition-colors ${imagePreview ? 'border-orange-500' : ''}`}
                     onClick={() => document.getElementById('banner-input')?.click()}
                   >
                     {imagePreview ? (
@@ -134,7 +155,7 @@ export default function ManageBanners() {
                     ) : (
                       <>
                         <ImageIcon size={32} className="text-muted-foreground mb-2" />
-                        <p className="text-xs text-muted-foreground text-center px-4 font-medium">Click to upload 16:9 image</p>
+                        <p className="text-xs text-muted-foreground text-center px-4 font-medium">Click to upload 16:4 image</p>
                       </>
                     )}
                   </div>
@@ -194,7 +215,7 @@ export default function ManageBanners() {
             <div className="space-y-4">
               {banners.map((banner) => (
                 <div key={banner.id} className="glass-card p-4 rounded-3xl flex flex-col md:flex-row gap-6 items-center">
-                  <div className="relative w-full md:w-48 aspect-[16/9] rounded-2xl overflow-hidden flex-shrink-0">
+                  <div className="relative w-full md:w-48 aspect-[16/4] rounded-2xl overflow-hidden flex-shrink-0">
                     <Image src={banner.imageUrl} alt="" fill className="object-cover" />
                   </div>
                   <div className="flex-1">
@@ -221,6 +242,15 @@ export default function ManageBanners() {
           </div>
         </div>
       </div>
+      
+      {showCropper && tempImageSrc && (
+        <ImageCropper
+          imageSrc={tempImageSrc}
+          onCropComplete={handleCropComplete}
+          onCancel={handleCropCancel}
+          aspect={16 / 4}
+        />
+      )}
     </div>
   );
 }
