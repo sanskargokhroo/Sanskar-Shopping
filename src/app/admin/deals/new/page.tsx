@@ -47,6 +47,18 @@ export default function AddDeal() {
     if (!authLoading && !user) router.push("/admin/login");
   }, [user, authLoading, router]);
 
+  // Auto-calculate discount percentage
+  useEffect(() => {
+    if (formData.originalPrice && formData.price) {
+      const original = parseFloat(formData.originalPrice);
+      const deal = parseFloat(formData.price);
+      if (original > 0) {
+        const discount = Math.round(((original - deal) / original) * 100);
+        setFormData(prev => ({ ...prev, offerPercentage: Math.max(0, discount).toString() }));
+      }
+    }
+  }, [formData.originalPrice, formData.price]);
+
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
